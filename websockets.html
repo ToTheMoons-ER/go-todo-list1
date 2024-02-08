@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go Websockets TODO</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #3498db, #6dd5fa);
+      color: #333;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #container {
+      max-width: 400px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    #input {
+      font-size: 16px;
+      padding: 10px;
+      width: calc(100% - 20px);
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #219653;
+    }
+
+    pre {
+      font-size: 16px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 15px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <h1>Go Websockets TODO</h1>
+    <p>Available commands for the todo app:</p>
+    <p>- Add [Ex: Add message]</p>
+    <p>- Done [Ex: Done message]</p>
+    <input id="input" type="text" placeholder="Enter command..." />
+    <button onclick="send()">Send</button>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    var input = document.getElementById("input");
+    var output = document.getElementById("output");
+    var socket = new WebSocket("ws://localhost:8080/todo");
+
+    socket.onopen = function () {
+      output.innerHTML += "Status: Connected\n";
+    };
+
+    socket.onmessage = function (e) {
+      output.innerHTML += "\nServer: " + e.data + "\n";
+    };
+
+    function send() {
+      socket.send(input.value);
+      input.value = "";
+    }
+  </script>
+</body>
+
+</html>
